@@ -28,11 +28,6 @@ webos_distro_variant_dep()
 add_subdirectory(src/initctl)
 add_subdirectory(src/utils)
 
-##### environments #####
-webos_configure_source_files(systemd_in_global_env
-    files/systemd/environments/30-webos-global.conf
-    files/systemd/environments/31-surface-manager.conf)
-
 ##### overrides #####
 set(systemd_override
     files/systemd/overrides/multi-user.target.wants)
@@ -44,26 +39,11 @@ endif()
 
 ##### scripts #####
 webos_configure_source_files(systemd_in_scripts
-    files/systemd/scripts/common/configurator-db8.sh
-    files/systemd/scripts/common/connman.sh
-    files/systemd/scripts/common/db8-maindb.sh
-    files/systemd/scripts/common/jail.sh
-    files/systemd/scripts/common/luna-download-mgr.sh
-    files/systemd/scripts/common/maliit-server.sh
-    files/systemd/scripts/common/populate-volatile.sh
-    files/systemd/scripts/common/sam.sh
-    files/systemd/scripts/common/settings-service.sh
-    files/systemd/scripts/common/surface-manager-env.sh
-    files/systemd/scripts/common/usbctrl.sh
-    files/systemd/scripts/common/webos-nettools.sh
-    files/systemd/scripts/common/wpa-supplicant.sh)
+    files/systemd/scripts/common/populate-volatile.sh)
 
 if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
     webos_configure_source_files(systemd_distro_in_scripts
-        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/devmode.sh
-        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon-stop.sh
-        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/webapp-mgr.sh
-        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/webos-bluetooth-service.sh)
+        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon-stop.sh)
 endif()
 
 set(systemd_enable_systemd_environments
@@ -71,52 +51,24 @@ set(systemd_enable_systemd_environments
 
 ##### services & targets #####
 set(systemd_units
-    files/systemd/services/common/activitymanager.service
-    files/systemd/services/common/appinstalld.service
-    files/systemd/services/common/audiod.service
-    files/systemd/services/common/booster.service
-    files/systemd/services/common/bootd.service
-    files/systemd/services/common/bugreportd.service
-    files/systemd/services/common/configd.service
-    files/systemd/services/common/configurator-activity.service
-    files/systemd/services/common/configurator-db8.service
-    files/systemd/services/common/connman.service
-    files/systemd/services/common/crashd.service
-    files/systemd/services/common/db8-maindb.service
-    files/systemd/services/common/db8-mediadb.service
-    files/systemd/services/common/db8-pre-config.service
-    files/systemd/services/common/db8-tempdb.service
-    files/systemd/services/common/devmode.service
-    files/systemd/services/common/dropbear.service
-    files/systemd/services/common/dropbear.socket
-    files/systemd/services/common/ecryptfs.service
-    files/systemd/services/common/event-device-creator.service
-    files/systemd/services/common/event-monitor.service
-    files/systemd/services/common/jail.service
+    files/systemd/services/common/audio-service.service
+    files/systemd/services/common/certmgrd.service
+    files/systemd/services/common/db8@.service
+    files/systemd/services/common/filecache.service
+    files/systemd/services/common/location-service.service
     files/systemd/services/common/ls-hubd.service
-    files/systemd/services/common/luna-download-mgr.service
+    files/systemd/services/common/luna-next.service
+    files/systemd/services/common/luna-sysmgr.service
     files/systemd/services/common/luna-sys-service.service
-    files/systemd/services/common/maliit-server.service
-    files/systemd/services/common/node-fork-server.service
-    files/systemd/services/common/notificationmgr.service
+    files/systemd/services/common/mediaindexer.service
     files/systemd/services/common/nyx-utils.service
-    files/systemd/services/common/pacrunner.service
-    files/systemd/services/common/pm-klog-daemon.service
+    files/systemd/services/common/org.webosinternals.ipkgservice.service
+    files/systemd/services/common/org.webosports.service.lumberjack.service
     files/systemd/services/common/populate-volatile.service
-    files/systemd/services/common/rdxd.service
-    files/systemd/services/common/sam.service
-    files/systemd/services/common/second-screen-gateway.service
-    files/systemd/services/common/settings-service-recovery.service
-    files/systemd/services/common/settings-service.service
     files/systemd/services/common/sleepd.service
-    files/systemd/services/common/sntp.service
-    files/systemd/services/common/surface-manager-finalize.service
-    files/systemd/services/common/umediaserver.service
-    files/systemd/services/common/usbctrl.service
+    files/systemd/services/common/storaged.service
     files/systemd/services/common/webos-connman-adapter.service
-    files/systemd/services/common/webos-nettools.service
-    files/systemd/services/common/wpa-supplicant.service
-    files/systemd/services/common/wpa_supplicant.service
+    files/systemd/services/common/webos-telephonyd.service
     files/systemd/targets/default-webos.target
     files/systemd/targets/webos-bd.target
     files/systemd/targets/webos-cbd.target
@@ -127,25 +79,14 @@ set(systemd_units
 
 if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
     set(systemd_distro_units
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/avoutputd.service
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/db8.service
         files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon.service
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/pulseaudio.service
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/surface-manager.service
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/webapp-mgr.service
-        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/webos-bluetooth-service.service)
+)
 endif()
 
 ##### tmpfiles #####
 webos_configure_source_files(systemd_in_tmpfile
     files/systemd/tmpfiles/30-run.conf
     files/systemd/tmpfiles/31-var.conf)
-
-# install global env files
-install(FILES
-    ${systemd_global_env}
-    ${systemd_in_global_env}
-    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/systemd/system.conf.d)
 
 # install override
 install(DIRECTORY

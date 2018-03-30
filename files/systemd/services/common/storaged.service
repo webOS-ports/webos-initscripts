@@ -1,0 +1,12 @@
+[Unit]
+Description=Open webOS component to enable Mass Storage Mode
+Requires=ls-hubd.service
+After=ls-hubd.service
+
+[Service]
+Type=simple
+Restart=on-failure
+ExecStart=/usr/sbin/storaged -d -s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+[Unit]
+Description=Slice for native applications
+Wants=-.slice
+After=-.slice
