@@ -17,8 +17,4 @@
 [Unit]
 Description="%n"
 Wants=activitymanager.service \
-      appinstalld.service \
-      bugreportd.service \
-      configurator-activity.service \
-      event-monitor.service \
-      luna-download-mgr.service
+      configurator-activity.service

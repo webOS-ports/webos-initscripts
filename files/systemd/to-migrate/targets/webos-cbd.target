@@ -14,10 +14,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Initialy this unit is cloned from multi-user.target
-
 [Unit]
 Description="%n"
-
-Wants=ls-hubd.service \
-      populate-volatile.service 
+Wants=audiod.service \
+      booster.service \
+      crashd.service \
+      pm-log-daemon.service \
+      sleepd.service \
+      webos-bluetooth-service.service

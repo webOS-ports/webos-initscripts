@@ -16,5 +16,4 @@
 
 [Unit]
 Description="%n"
-Wants=nyx-utils.service \
-      second-screen-gateway.service
+Wants=nyx-utils.service

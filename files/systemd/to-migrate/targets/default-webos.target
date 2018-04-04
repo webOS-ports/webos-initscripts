@@ -19,5 +19,12 @@
 [Unit]
 Description="%n"
 
-Wants=ls-hubd.service \
-      populate-volatile.service 
+Wants=bootd.service \
+      booster.service \
+      configd.service \
+      ls-hubd.service \
+      populate-volatile.service \
+      sam.service \
+      surface-manager.service \
+      surface-manager-finalize.service \
+      usbctrl.service

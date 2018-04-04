@@ -14,10 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Initialy this unit is cloned from multi-user.target
-
 [Unit]
 Description="%n"
-
-Wants=ls-hubd.service \
-      populate-volatile.service 
+Wants=nyx-utils.service \
+      second-screen-gateway.service

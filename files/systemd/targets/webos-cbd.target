@@ -16,9 +16,5 @@
 
 [Unit]
 Description="%n"
-Wants=audiod.service \
-      booster.service \
-      crashd.service \
-      pm-log-daemon.service \
-      sleepd.service \
-      webos-bluetooth-service.service
+Wants=pm-log-daemon.service \
+      sleepd.service

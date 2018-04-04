@@ -17,20 +17,7 @@
 [Unit]
 Description="%n"
 
-# FOSS
-Wants=pulseaudio.service
-
 # Network Related services
-Wants=connman.service \
-      dropbear.service \
-      pacrunner.service \
-      webos-nettools.service \
-      webos-connman-adapter.service \
-      wpa-supplicant.service
+Wants=webos-connman-adapter.service
 
-Wants=event-device-creator.service \
-      jail.service \
-      luna-sys-service.service \
-      node-fork-server.service \
-      pm-klog-daemon.service \
-      webapp-mgr.service
+Wants=luna-sys-service.service 

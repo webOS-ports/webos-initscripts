@@ -16,8 +16,4 @@
 
 [Unit]
 Description="%n"
-Wants=devmode.service \
-      maliit-server.service \
-      notificationmgr.service \
-      rdxd.service \
-      umediaserver.service
+Wants=

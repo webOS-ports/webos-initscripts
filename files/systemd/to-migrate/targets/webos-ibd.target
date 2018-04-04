@@ -14,10 +14,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Initialy this unit is cloned from multi-user.target
-
 [Unit]
 Description="%n"
 
-Wants=ls-hubd.service \
-      populate-volatile.service 
+# FOSS
+Wants=pulseaudio.service
+
+# Network Related services
+Wants=connman.service \
+      dropbear.service \
+      pacrunner.service \
+      webos-nettools.service \
+      webos-connman-adapter.service \
+      wpa-supplicant.service
+
+Wants=event-device-creator.service \
+      jail.service \
+      luna-sys-service.service \
+      node-fork-server.service \
+      pm-klog-daemon.service \
+      webapp-mgr.service
