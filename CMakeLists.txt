@@ -39,6 +39,8 @@ endif()
 
 ##### scripts #####
 webos_configure_source_files(systemd_in_scripts
+    files/systemd/scripts/common/configurator-db8.sh
+    files/systemd/scripts/common/db8-maindb.sh
     files/systemd/scripts/common/populate-volatile.sh)
 
 if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
@@ -51,9 +53,15 @@ set(systemd_enable_systemd_environments
 
 ##### services & targets #####
 set(systemd_units
+    files/systemd/services/common/activitymanager.service
     files/systemd/services/common/audio-service.service
     files/systemd/services/common/certmgrd.service
-    files/systemd/services/common/db8@.service
+    files/systemd/services/common/configurator-activity.service
+    files/systemd/services/common/configurator-db8.service
+    files/systemd/services/common/db8-maindb.service
+    files/systemd/services/common/db8-mediadb.service
+    files/systemd/services/common/db8-pre-config.service
+    files/systemd/services/common/db8-tempdb.service
     files/systemd/services/common/filecache.service
     files/systemd/services/common/location-service.service
     files/systemd/services/common/ls-hubd.service
@@ -79,6 +87,7 @@ set(systemd_units
 
 if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
     set(systemd_distro_units
+        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/db8.service
         files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon.service
 )
 endif()
