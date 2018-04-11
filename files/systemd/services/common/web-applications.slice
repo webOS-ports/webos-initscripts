@@ -1,4 +1,0 @@
-[Unit]
-Description=Slice for web based applications
-Wants=-.slice
-After=-.slice
