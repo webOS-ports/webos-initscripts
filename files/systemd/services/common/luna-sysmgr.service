@@ -1,0 +1,14 @@
+[Unit]
+Description=Luna System Manager
+After=luna-sys-service.service nyx.target configurator.service
+Requires=luna-sys-service.service
+BindsTo=nyx.target
+
+[Service]
+Type=simple
+Restart=on-failure
+ExecStart=/usr/sbin/LunaSysMgr
+OOMScoreAdjust=-1000
+
+[Install]
+WantedBy=multi-user.target

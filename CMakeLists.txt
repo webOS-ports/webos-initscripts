@@ -27,3 +27,103 @@ webos_distro_variant_dep()
 
 add_subdirectory(src/initctl)
 add_subdirectory(src/utils)
+
+##### overrides #####
+set(systemd_override
+    files/systemd/overrides/multi-user.target.wants)
+
+if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
+    set(systemd_distro_override
+        files/systemd/overrides/webos-cbd.target.wants)
+endif()
+
+##### scripts #####
+webos_configure_source_files(systemd_in_scripts
+    files/systemd/scripts/common/configurator-db8.sh
+    files/systemd/scripts/common/db8-maindb.sh
+    files/systemd/scripts/common/populate-volatile.sh)
+
+if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
+    webos_configure_source_files(systemd_distro_in_scripts
+        files/systemd/scripts/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon-stop.sh)
+endif()
+
+set(systemd_enable_systemd_environments
+    files/systemd/scripts/common/get-systemd-environments.sh)
+
+##### services & targets #####
+set(systemd_units
+    files/systemd/services/common/activitymanager.service
+    files/systemd/services/common/audio-service.service
+    files/systemd/services/common/certmgrd.service
+    files/systemd/services/common/configurator-activity.service
+    files/systemd/services/common/configurator-db8.service
+    files/systemd/services/common/db8-maindb.service
+    files/systemd/services/common/db8-mediadb.service
+    files/systemd/services/common/db8-pre-config.service
+    files/systemd/services/common/db8-tempdb.service
+    files/systemd/services/common/filecache.service
+    files/systemd/services/common/location-service.service
+    files/systemd/services/common/ls-hubd.service
+    files/systemd/services/common/luna-next.service
+    files/systemd/services/common/luna-sysmgr.service
+    files/systemd/services/common/luna-sys-service.service
+    files/systemd/services/common/mediaindexer.service
+    files/systemd/services/common/nyx-utils.service
+    files/systemd/services/common/org.webosinternals.ipkgservice.service
+    files/systemd/services/common/org.webosports.service.lumberjack.service
+    files/systemd/services/common/populate-volatile.service
+    files/systemd/services/common/sleepd.service
+    files/systemd/services/common/storaged.service
+    files/systemd/services/common/webos-connman-adapter.service
+    files/systemd/services/common/webos-telephonyd.service
+    files/systemd/targets/default-webos.target
+    files/systemd/targets/webos-bd.target
+    files/systemd/targets/webos-cbd.target
+    files/systemd/targets/webos-dis.target
+    files/systemd/targets/webos-ibd.target
+    files/systemd/targets/webos-mbd.target
+    files/systemd/targets/webos-rbd.target)
+
+if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
+    set(systemd_distro_units
+        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/db8.service
+        files/systemd/services/distro/${WEBOS_TARGET_DISTRO}/pm-log-daemon.service
+)
+endif()
+
+##### tmpfiles #####
+webos_configure_source_files(systemd_in_tmpfile
+    files/systemd/tmpfiles/30-run.conf
+    files/systemd/tmpfiles/31-var.conf)
+
+# install override
+install(DIRECTORY
+    ${systemd_override}
+    ${systemd_distro_override}
+    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/systemd/system)
+
+# install systemd scripts
+install(PROGRAMS
+    ${systemd_in_scripts}
+    ${systemd_distro_in_scripts}
+    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/systemd/system/scripts)
+
+# install support to enable systemd environments on console
+install(PROGRAMS
+    ${systemd_enable_systemd_environments}
+    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/profile.d)
+
+# install systemd units
+install(FILES
+    ${systemd_units}
+    ${systemd_distro_units}
+    ${systemd_machine_units}
+    ${systemd_in_units}
+    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/systemd/system)
+
+# install temp files
+install(FILES
+    ${systemd_tmpfile}
+    ${systemd_in_tmpfile}
+    DESTINATION ${WEBOS_INSTALL_SYSCONFDIR}/tmpfiles.d)
