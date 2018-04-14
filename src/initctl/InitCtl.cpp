@@ -29,10 +29,8 @@ map<std::string, std::string> InitCtl::s_blockUnits = {
 
 map<std::string, std::string> InitCtl::s_notifyUnits = {
     { "ls-hubd-ready", "ls-hubd" },
-    { "lsm-ready", "surface-manager" },
     { "activitymanager-ready", "activitymanager" },
-    { "settingsservice-ready", "SettingsService" },
-    { "pdm-ready", "physical-device-manager" }
+    { "settingsservice-ready", "SettingsService" }
 };
 
 unordered_map<std::string, std::string> InitCtl::s_noBlockUnits = {
