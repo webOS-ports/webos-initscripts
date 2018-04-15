@@ -32,10 +32,8 @@ add_subdirectory(src/utils)
 set(systemd_override
     files/systemd/overrides/multi-user.target.wants)
 
-if(${WEBOS_TARGET_DISTRO} STREQUAL "webos")
-    set(systemd_distro_override
-        files/systemd/overrides/webos-cbd.target.wants)
-endif()
+set(systemd_distro_override
+    files/systemd/overrides/webos-cbd.target.wants)
 
 set(systemd_enable_systemd_environments
     files/systemd/scripts/common/get-systemd-environments.sh)
