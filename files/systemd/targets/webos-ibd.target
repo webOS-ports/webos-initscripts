@@ -18,6 +18,8 @@
 Description="%n"
 
 # Network Related services
-Wants=webos-connman-adapter.service
-
-Wants=luna-sys-service.service 
+Wants=webos-connman-adapter.service \
+      luna-sys-service.service 
+      
+[Install]
+WantedBy=multi-user.target

@@ -17,3 +17,6 @@
 [Unit]
 Description="%n"
 Wants=
+      
+[Install]
+WantedBy=multi-user.target

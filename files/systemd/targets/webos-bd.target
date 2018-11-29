@@ -17,3 +17,6 @@
 [Unit]
 Description="%n"
 Wants=nyx-utils.service
+      
+[Install]
+WantedBy=multi-user.target
