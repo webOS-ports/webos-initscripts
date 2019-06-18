@@ -19,5 +19,6 @@
 [Unit]
 Description="%n"
 
-Wants=ls-hubd.service \
+Wants=bootd.service \
+      ls-hubd.service \
       populate-volatile.service 
