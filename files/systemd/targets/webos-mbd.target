@@ -16,7 +16,7 @@
 
 [Unit]
 Description="%n"
-Wants=
+Wants=rdxd.service
       
 [Install]
 WantedBy=multi-user.target
