@@ -17,7 +17,10 @@
 [Unit]
 Description="%n"
 Wants=activitymanager.service \
-      configurator-activity.service
-      
+      appinstalld.service \
+      configurator-activity.service \
+      event-monitor.service \
+      luna-download-mgr.service
+
 [Install]
 WantedBy=multi-user.target

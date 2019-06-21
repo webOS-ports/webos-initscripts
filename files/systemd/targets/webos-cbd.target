@@ -16,7 +16,8 @@
 
 [Unit]
 Description="%n"
-Wants=pm-log-daemon.service \
+Wants=crashd.service \
+      pm-log-daemon.service \
       sleepd.service
       
 [Install]
