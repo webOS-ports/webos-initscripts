@@ -20,7 +20,7 @@ Description="%n"
 # webos
 Wants=configurator-db8.service \
       db8.service \
-      physical-device-manager.service \
+      physical-device-manager.service
       
 [Install]
 WantedBy=multi-user.target
