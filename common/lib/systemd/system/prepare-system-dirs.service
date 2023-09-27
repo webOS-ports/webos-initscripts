@@ -1,0 +1,22 @@
+# @@@LICENSE
+#
+# Copyright (c) 2022 LG Electronics, Inc.
+#
+# LICENSE@@@
+
+[Unit]
+Description=webos-initscripts - "%n"
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=sysinit.target
+After=local-fs.target
+Requires=local-fs.target
+ConditionPathExists=!/var/luna/preferences/system_dir_created
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/lib/systemd/system/scripts/prepare-system-dirs.sh
+
+[Install]
+WantedBy=local-fs.target
