@@ -29,6 +29,7 @@ map<std::string, std::string> InitCtl::s_blockUnits = {
 
 map<std::string, std::string> InitCtl::s_notifyUnits = {
     { "ls-hubd-ready", "ls-hubd" },
+    { "lsm-ready", "surface-manager" },
     { "activitymanager-ready", "activitymanager" },
     { "settingsservice-ready", "SettingsService" }
 };
