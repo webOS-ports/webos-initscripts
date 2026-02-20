@@ -57,7 +57,7 @@ if [ -d $ZRAM_PATH ]; then
         done
     fi
 
-    DISKSIZE=`grep disksize $ZRAM_CONF | awk -F":" '{print $2}'`
+    DISKSIZE=`grep disksize $ZRAM_CONF 2>/dev/null | awk -F":" '{print $2}'`
     if [ -z $DISKSIZE ]; then
         ZRAM_RATIO=25
         ZRAM_MIN_DISKSIZE=350
@@ -97,9 +97,12 @@ if [ -d $ZRAM_PATH ]; then
     fi
     ZRAM_SIZE=$(($DISKSIZE*1024*1024))
 
-    echo $MAX_COMP_STREAMS > $ZRAM_PATH/max_comp_streams || true
-    if [ ! -z $COMP_ALGORITHM ]; then
-        echo $COMP_ALGORITHM   > $ZRAM_PATH/comp_algorithm || true
+    # max_comp_streams is deprecated in Linux 5.x+ (multi-stream is automatic)
+    if [ -f $ZRAM_PATH/max_comp_streams ] && [ -w $ZRAM_PATH/max_comp_streams ]; then
+        echo $MAX_COMP_STREAMS > $ZRAM_PATH/max_comp_streams 2>/dev/null || true
+    fi
+    if [ ! -z "$COMP_ALGORITHM" ] && [ -f $ZRAM_PATH/comp_algorithm ] && [ -w $ZRAM_PATH/comp_algorithm ]; then
+        echo $COMP_ALGORITHM > $ZRAM_PATH/comp_algorithm 2>/dev/null || true
     fi
     echo $ZRAM_SIZE        > $ZRAM_PATH/disksize
 fi
