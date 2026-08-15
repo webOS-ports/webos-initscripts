@@ -19,4 +19,5 @@ d        /var/preferences            777     root   -
 d        /var/home/root              -       -      -
 d        /var/tmp                    -       -      -
 d        /var/file-cache             -       -      -
+d        /var/cache/xdg              0711    root   root
 L        @WEBOS_INSTALL_LOCALSTATEDIR@/spool/rdxd/previous_boot_logs.tar.gz - - - - @WEBOS_INSTALL_LOGDIR@/previous_boot_logs.tar.gz
