@@ -29,12 +29,27 @@ def remove_journald_old_files():
         os.remove(f)
 
 def flush_journald_log_to_file():
-    journalctl_options = ['-a']
+    # -b limits the dump to the boot that is ending. Without it this walks
+    # every boot journald still has on disk, which on a device with a
+    # persistent journal is the whole 1+ GB of it: 36 seconds to produce and
+    # ~180 MB written to flash, on every single shutdown. The older boots are
+    # still in /var/log/journal for journalctl -b -1 and friends to read, so
+    # nothing is lost by leaving them out of this text copy.
+    journalctl_options = ['-a', '-b']
     command = ['journalctl'] + journalctl_options
     log_file_name = "/var/log/journald-" + get_timestamp() + ".log"
     with open(log_file_name, "w") as logFile:
         call(command, stdout=logFile)
     return
+
+def exclude_journal(tarinfo):
+    # /var/log/journal is journald's own binary database, and it is persistent
+    # here: gzipping it into the backup means compressing a copy of every boot
+    # ever recorded, alongside the text dump that was just made of the last
+    # one. The text dump is what this backup is for.
+    if tarinfo.name == 'log/journal' or tarinfo.name.startswith('log/journal/'):
+        return None
+    return tarinfo
 
 def backup_var_log():
     rdxdDir = "/var/spool/rdxd/"
@@ -46,7 +61,7 @@ def backup_var_log():
 
     source = '/var/log/'
     with tarfile.open(saveFile, "w:gz") as tar:
-        tar.add(source, arcname='log')
+        tar.add(source, arcname='log', filter=exclude_journal)
     return
 
 if __name__ == '__main__':

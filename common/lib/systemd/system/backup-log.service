@@ -17,9 +17,21 @@
 [Unit]
 Description=webos-initscripts - "%n"
 Conflicts=shutdown.target
+# Conflicts= on its own says the unit and shutdown.target may not both be up,
+# but says nothing about the order the two jobs run in. Without Before= the
+# ExecStop= below can be scheduled alongside the filesystem teardown, which is
+# how it came to be writing into /var/log while var.mount was being stopped:
+# the unmount failed with "target is busy" and the backup was killed part-way.
+Before=shutdown.target
+# Everything this writes lives under /var. Ordering after the mount keeps the
+# stop job ahead of the unmount, since units stop in reverse start order.
+RequiresMountsFor=/var/log /var/spool
 
 [Service]
 Type=oneshot
 ExecStart=-/bin/touch /tmp/backup-log-ready
 ExecStop=/lib/systemd/system/scripts/save-journald-logs.py
 RemainAfterExit=yes
+# A log backup is a convenience, not a reason to hold up a shutdown the user
+# asked for. Anything slower than this gets abandoned rather than waited on.
+TimeoutStopSec=30s
