@@ -72,20 +72,13 @@ if [ -d $ZRAM_PATH ]; then
         fi
 
         # get total free
-        TOTAL_FREE=0
-        while read line
-        do
-            ZONE=`echo $line | awk '/^Node/ {print $4}'`
-            if [ "$ZONE" = "Normal" ] || [ "$ZONE" = "HighMem" ]
-            then
-                read line
-                until [ "`echo $line | awk '{print $1}'`" = "managed" ]; do
-                    read line
-                done
-                ZONESIZE=`echo $line | awk '{print $2}'`
-                TOTAL_FREE=`expr $TOTAL_FREE + $ZONESIZE`
-            fi
-        done < /proc/zoneinfo
+        # Pages in the Normal and HighMem zones: "managed" where the kernel prints it, "present" where it
+        # does not. The loop that stood here waited for a "managed" line and never ended on a 3.4 kernel,
+        # which prints none: zram-on.sh spun for ever, the disk size was never set and swap never came on.
+        TOTAL_FREE=`awk '/^Node/ { zone = $4; next }
+                         (zone == "Normal" || zone == "HighMem") && $1 == "present" { present[zone] = $2 }
+                         (zone == "Normal" || zone == "HighMem") && $1 == "managed" { managed[zone] = $2 }
+                         END { for (z in present) total += (z in managed) ? managed[z] : present[z]; print total + 0 }' /proc/zoneinfo`
         TOTAL_FREE=$(($TOTAL_FREE*$PAGE_SIZE/1024/1024))
 
         if [ $TOTAL_FREE -lt $BASE_FREE ]; then
