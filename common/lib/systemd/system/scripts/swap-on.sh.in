@@ -22,7 +22,10 @@ fi
 
 mkswap $SWAP_DEV > /dev/null 2>&1 || true;
 
-if swapon --discard $SWAP_DEV; then
+# zram before any disk swap: swapon with no priority gives -2, -3, ... in order of activation,
+# so a swap partition enabled earlier (a LuneOS device's store-swap volume) was filled first and
+# zram sat empty while pages went to eMMC.
+if swapon --discard -p 100 $SWAP_DEV; then
     echo "Swapon succeeded"
 else
     echo "Swapon failed"
